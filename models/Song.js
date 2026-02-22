@@ -1,33 +1,23 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require("mongoose");
 
-const songSchema = new Schema({
+const songSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: [true, 'Song title is required.']
-    },
-    artist: {
-        type: String,
-        required: [true, 'Artist name is missing.'],
-        minlength: [3, 'Artist name must be at least 3 characters.']
-    },
-    genre: {
-        type: String,
-        enum: {
-            values: ['Pop', 'Rock', 'Jazz', 'Hip-Hop'],
-            message: 'Genre must be one of Pop, Rock, Jazz, or Hip-Hop.'
-        },
-        default: 'Pop'
+        required: true,
     },
     duration: {
         type: Number,
         required: true,
-        min: [0, 'Duration cannot be negative.']
-    }
-}, {
-    timestamps: true
+    },
+    artist: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Artist",
+        required: true,
+    },
+    album: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Album",
+    },
 });
 
-const Song = mongoose.model('Song', songSchema);
-
-module.exports = Song
+module.exports = mongoose.model("Song", songSchema);
